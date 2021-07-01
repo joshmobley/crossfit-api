@@ -1,0 +1,29 @@
+USERS: - id - email - password
+
+GYMS: - id - name - city - website
+
+PROGRAMS: - id - name - gym_id
+
+GYMS_USERS: - user_id - gym_id - permissions_id
+
+PERMISSIONS: - id - name - value
+
+WORKOUTS: - id - name - date - program_id - score_id - save as template
+
+MOVEMENTS: - id - name - notes
+
+MOVEMENT_WORKOUTS: - workout_id - movement_id - instruction
+
+USERS_WORKOUTS: - user_id - workout_id - score_id
+
+USERS_PROGRAMS: - user_id - program_id
+
+SCORES: - id - type
+
+USERS_WORKOUTS_SCORES: - users_workouts_id - scores_id - value
+
+/users - GET - POST - PUT - DELETE
+
+/gyms - GET - POST - PUT - DELETE
+
+/programs/:id - GET - POST - PUT - DELETE
