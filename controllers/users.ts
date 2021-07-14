@@ -1,33 +1,22 @@
 import User from "../models/user";
 
+const userSelect = User.query().select(
+  "id",
+  "name",
+  "email",
+  "avatar",
+  "created_at",
+  "updated_at"
+);
+
 const getUsers = async (): Promise<Array<User>> => {
-  const users = await User.query();
+  const users = await userSelect;
   return users;
 };
 
 const getUser = async (id: number): Promise<User> => {
-  const user = await User.query().findById(id);
+  const user = await userSelect.findById(id);
   return user;
-};
-
-const createUser = async (
-  email: string,
-  password: string,
-  name: string,
-  avatar?: string
-): Promise<User> => {
-  const userExists = await User.query().where("email", email);
-
-  if (userExists.length > 0)
-    throw "User already created with this email address.";
-
-  const newUser = await User.query().insert({
-    email,
-    password,
-    name,
-    avatar,
-  });
-  return newUser;
 };
 
 const updateUser = async (
@@ -37,7 +26,7 @@ const updateUser = async (
   name?: string,
   avatar?: string
 ): Promise<User> => {
-  const updatedUser = await User.query().findById(id).patchAndFetch({
+  const updatedUser = await userSelect.findById(id).patchAndFetch({
     email,
     password,
     name,
@@ -52,10 +41,4 @@ const deleteUser = async (id: number, user_id: number): Promise<number> => {
   return deletedUser;
 };
 
-module.exports = {
-  getUsers,
-  getUser,
-  createUser,
-  updateUser,
-  deleteUser,
-};
+export { getUsers, getUser, updateUser, deleteUser };

@@ -54,8 +54,9 @@ router.delete("/:id", async (req: Request, res: Response) => {
   const { id } = req.params;
   const user_id = req["user_id"];
   try {
-    await deletePost(parseInt(id), user_id);
-    res.send(`post deleted`);
+    const postDeleted = await deletePost(parseInt(id), user_id);
+    if (postDeleted) res.send("post deleted");
+    else res.status(403).send("not authorized to delete post");
   } catch (err) {
     res.status(500).send(err.message);
   }

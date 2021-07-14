@@ -19,6 +19,12 @@ export async function seed(knex: Knex): Promise<void> {
           image_url: "https://placehold.it/800x600",
           scoretype: "time",
         },
+        {
+          title: "Deleted by test",
+          user_id: 1,
+          image_url: "https://placehold.it/800x600",
+          scoretype: "time",
+        },
       ]);
     });
 }

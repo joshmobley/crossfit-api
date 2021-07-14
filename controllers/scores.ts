@@ -1,13 +1,22 @@
 import Score from "../models/score";
 
 const getScores = async (): Promise<Array<Score>> => {
-  const posts = await Score.query();
-  return posts;
+  const scores = await Score.query();
+  return scores;
 };
 
 const getScore = async (id: number): Promise<Score> => {
-  const post = await Score.query().findById(id);
-  return post;
+  const score = await Score.query()
+    .select(
+      "scores.*",
+      "posts.title as score_post_title",
+      "users.name as score_user_name",
+      "users.avatar as score_user_avatar"
+    )
+    .join("users", "scores.user_id", "users.id")
+    .join("posts", "scores.post_id", "posts.id")
+    .findById(id);
+  return score;
 };
 
 const createScore = async (
@@ -31,21 +40,21 @@ const updateScore = async (
   value?: string,
   comment?: string
 ): Promise<Score> => {
-  const updatedPost = await Score.query()
+  const updatedScore = await Score.query()
     .findById(id)
     .where("user_id", user_id)
     .patchAndFetchById(id, {
       value,
       comment,
     });
-  return updatedPost;
+  return updatedScore;
 };
 
 const deleteScore = async (id: number, user_id: number): Promise<number> => {
-  const deletedPost = await Score.query()
+  const deletedScore = await Score.query()
     .where("user_id", user_id)
     .deleteById(id);
-  return deletedPost;
+  return deletedScore;
 };
 
 const getScoresByPost = async (id: number): Promise<Array<Score>> => {

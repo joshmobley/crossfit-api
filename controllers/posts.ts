@@ -12,7 +12,6 @@ const getPost = async (id: number): Promise<Post> => {
     .select(
       "posts.*",
       "users.name as post_user_name",
-      "users.email as post_user_email",
       "users.avatar as post_user_avatar"
     )
     .join("users", "posts.user_id", "users.id")
@@ -64,6 +63,7 @@ const deletePost = async (id: number, user_id: number): Promise<number> => {
   const deletedPost = await Post.query()
     .where("user_id", user_id)
     .deleteById(id);
+
   return deletedPost;
 };
 

@@ -46,8 +46,9 @@ router.delete("/:id", async (req, res) => {
   const { id } = req.params;
   const user_id = req["user_id"];
   try {
-    await deleteScore(parseInt(id), user_id);
-    res.send(`score deleted`);
+    const deletedScore = await deleteScore(parseInt(id), user_id);
+    if (deletedScore) res.send(`score deleted`);
+    else res.status(403).send("user not authorized to delete score");
   } catch (err) {
     res.status(500).send(err.message);
   }

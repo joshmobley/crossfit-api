@@ -1,13 +1,17 @@
 import { Request, Response, Router } from "express";
 import { getScoresByUser } from "../controllers/scores";
 const router = Router();
-const {
+import {
   getUsers,
   getUser,
-  createUser,
   deleteUser,
   updateUser,
-} = require("../controllers/users");
+} from "../controllers/users";
+import {
+  getFollowers,
+  createFollower,
+  deleteFollower,
+} from "../controllers/followers";
 
 router.get("/", async (req: Request, res: Response) => {
   const users = await getUsers();
@@ -20,15 +24,6 @@ router.get("/:id", async (req: Request, res: Response) => {
   res.send(user);
 });
 
-router.post("/", async (req: Request, res: Response) => {
-  const { email, password, name, avatar } = req.body;
-  try {
-    const newUser = await createUser(email, password, name, avatar);
-    res.send(newUser);
-  } catch (err) {
-    res.status(403).send(err);
-  }
-});
 router.patch("/:id", async (req: Request, res: Response) => {
   const { email, password, name, avatar } = req.body;
   const { id } = req.params;
@@ -47,7 +42,7 @@ router.delete("/:id", async (req: Request, res: Response) => {
     await deleteUser(parseInt(id), user_id);
     res.send(`user deleted`);
   } catch (err) {
-    res.status(500).send(err.message);
+    res.status(403).send(err);
   }
 });
 
@@ -60,5 +55,52 @@ router.get("/:id/scores", async (req: Request, res: Response) => {
     res.status(500).send(err.message);
   }
 });
+
+router.get("/:id/followers", async (req: Request, res: Response) => {
+  try {
+    const followers = await getFollowers();
+    res.send(followers);
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+});
+
+router.post("/:id/followers", async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const user_id = req["user_id"];
+  const { follower_id } = req.body;
+  try {
+    const follower = await createFollower(
+      parseInt(id),
+      parseInt(user_id),
+      parseInt(follower_id)
+    );
+    res.send(follower);
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+});
+
+router.delete(
+  "/:id/followers/:follower_id",
+  async (req: Request, res: Response) => {
+    const { id, follower_id } = req.params;
+    const user_id = req["user_id"];
+    try {
+      const deletedFollower = await deleteFollower(
+        parseInt(id),
+        parseInt(user_id),
+        parseInt(follower_id)
+      );
+      if (deletedFollower) res.json({ message: "follower has been deleted" });
+      else
+        res
+          .status(403)
+          .json({ error: "user is not authorized to remove follower" });
+    } catch (err) {
+      res.status(500).send(err.message);
+    }
+  }
+);
 
 export default router;
