@@ -1,4 +1,5 @@
 import express, { Request, Response } from "express";
+import cors from "cors";
 require("dotenv").config();
 import authRouter from "./routes/auth";
 import postRouter from "./routes/posts";
@@ -9,7 +10,8 @@ import { checkToken } from "./middleware/authorization";
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded());
-const port = 3000;
+app.use(cors());
+const port = 3001;
 
 require("./knex");
 
