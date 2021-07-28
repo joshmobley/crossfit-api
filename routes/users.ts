@@ -27,6 +27,9 @@ router.get("/:id", async (req: Request, res: Response) => {
 router.patch("/:id", async (req: Request, res: Response) => {
   const { email, password, name, avatar } = req.body;
   const { id } = req.params;
+  const user_id = req["user_id"];
+  if (parseInt(user_id) !== parseInt(id))
+    return res.status(403).send("user not permitted to take this action");
   try {
     const user = await updateUser(parseInt(id), email, password, name, avatar);
     res.send(user);

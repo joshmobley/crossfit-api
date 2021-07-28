@@ -1,21 +1,21 @@
 import User from "../models/user";
 
-const userSelect = User.query().select(
-  "id",
-  "name",
-  "email",
-  "avatar",
-  "created_at",
-  "updated_at"
-);
-
 const getUsers = async (): Promise<Array<User>> => {
-  const users = await userSelect;
+  const users = await User.query().select(
+    "id",
+    "name",
+    "email",
+    "avatar",
+    "created_at",
+    "updated_at"
+  );
   return users;
 };
 
 const getUser = async (id: number): Promise<User> => {
-  const user = await userSelect.findById(id);
+  const user = await User.query()
+    .select("id", "name", "email", "avatar", "created_at", "updated_at")
+    .findById(id);
   return user;
 };
 
@@ -26,12 +26,15 @@ const updateUser = async (
   name?: string,
   avatar?: string
 ): Promise<User> => {
-  const updatedUser = await userSelect.findById(id).patchAndFetch({
+  const updatedUser = await User.query().patchAndFetchById(id, {
     email,
     password,
     name,
     avatar,
   });
+
+  delete updatedUser.password;
+
   return updatedUser;
 };
 

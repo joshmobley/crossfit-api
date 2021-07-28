@@ -20,25 +20,6 @@ class User extends Model {
   static get tableName() {
     return "users";
   }
-
-  static get relationMappings() {
-    // Importing models here is a one way to avoid require loops.
-
-    return {
-      gyms: {
-        relation: Model.ManyToManyRelation,
-        modelClass: __dirname + "/gym",
-        join: {
-          from: "users.id",
-          through: {
-            from: "gyms_users.user_id",
-            to: "gyms_users.gym_id",
-          },
-          to: "gyms.id",
-        },
-      },
-    };
-  }
 }
 
 export default User;
