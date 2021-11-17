@@ -11,13 +11,13 @@ export async function seed(knex: Knex): Promise<void> {
           name: "Josh Mobley",
           email: "jmob1986@gmail.com",
           password: "test123",
-          avatar: "https://placehold.it/300x300",
+          avatar: "//placehold.it/300x300",
         },
         {
           name: "Shaade Tavares",
           email: "shaadet@gmail.com",
           password: "test123",
-          avatar: "https://placehold.it/400x400",
+          avatar: "//placehold.it/400x400",
         },
       ]);
     });

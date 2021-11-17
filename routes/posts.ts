@@ -28,7 +28,7 @@ router.post("/", async (req: Request, res: Response) => {
     const newPost = await createPost(title, text, scoretype, user_id);
     res.send(newPost);
   } catch (err) {
-    res.status(403).send(err);
+    res.status(500).send(err);
   }
 });
 

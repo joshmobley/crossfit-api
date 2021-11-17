@@ -44,7 +44,7 @@ describe("GET /:id - get one score", () => {
         expect(comment).equals("That was hard!");
         expect(score_post_title).equals("Testing Post Updated");
         expect(score_user_name).equals("Josh Mobley");
-        expect(score_user_avatar).equals("https://placehold.it/300x300");
+        expect(score_user_avatar).equals("//placehold.it/300x300");
         expect(id).to.exist;
         expect(created_at).to.exist;
         expect(updated_at).to.exist;

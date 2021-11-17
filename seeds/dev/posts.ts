@@ -10,19 +10,19 @@ export async function seed(knex: Knex): Promise<void> {
         {
           title: "Grippy 15 min AMRAP",
           user_id: 1,
-          image_url: "https://placehold.it/800x600",
+          image_url: "//placehold.it/800x600",
           scoretype: "amrap",
         },
         {
           title: "Wednesday EMOM",
           user_id: 2,
-          image_url: "https://placehold.it/800x600",
+          image_url: "//placehold.it/800x600",
           scoretype: "time",
         },
         {
           title: "Deleted by test",
           user_id: 1,
-          image_url: "https://placehold.it/800x600",
+          image_url: "//placehold.it/800x600",
           scoretype: "time",
         },
       ]);

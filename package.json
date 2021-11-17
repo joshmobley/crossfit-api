@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test:mocha": "mocha -r ts-node/register 'tests/**/*.spec.ts' --exit",
-    "dev": "ts-node-dev --respawn --pretty --transpile-only app.ts",
+    "start": "ts-node-dev --respawn --pretty --transpile-only app.ts",
     "migrate:reset": "knex migrate:rollback --all && knex migrate:latest",
     "seed": "knex seed:run",
     "test": "npm run migrate:reset && npm run seed && npm run test:mocha"

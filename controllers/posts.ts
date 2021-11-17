@@ -3,7 +3,13 @@ const image_base64 = require("../mocks/image.js");
 import Post, { Scoretype } from "../models/post";
 
 const getPosts = async (): Promise<Array<Post>> => {
-  const posts = await Post.query();
+  const posts = await Post.query()
+    .select(
+      "posts.*",
+      "users.name as post_user_name",
+      "users.avatar as post_user_avatar"
+    )
+    .join("users", "posts.user_id", "users.id");
   return posts;
 };
 

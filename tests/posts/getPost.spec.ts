@@ -39,10 +39,10 @@ describe("GET /:id - get one post", () => {
 
         expect(title).equals("Grippy 15 min AMRAP");
         expect(user_id).equals(1);
-        expect(image_url).equals("https://placehold.it/800x600");
+        expect(image_url).equals("//placehold.it/800x600");
         expect(scoretype).equals("amrap");
         expect(post_user_name).equals("Josh Mobley");
-        expect(post_user_avatar).equals("https://placehold.it/300x300");
+        expect(post_user_avatar).equals("//placehold.it/300x300");
         expect(id).to.exist;
         expect(created_at).to.exist;
         expect(updated_at).to.exist;

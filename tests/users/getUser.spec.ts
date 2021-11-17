@@ -30,7 +30,7 @@ describe("GET /:id - get one user", () => {
         expect(id).equals(1);
         expect(name).equals("Josh Mobley");
         expect(email).equals("jmob1986@gmail.com");
-        expect(avatar).equals("https://placehold.it/300x300");
+        expect(avatar).equals("//placehold.it/300x300");
         expect(password).to.not.exist;
         expect(created_at).to.exist;
         expect(updated_at).to.exist;

@@ -47,7 +47,7 @@ describe("GET /:id/scores - get scores by post", () => {
         expect(created_at).to.exist;
         expect(updated_at).to.exist;
         expect(score_user_name).equals("Josh Mobley");
-        expect(score_user_avatar).equals("https://placehold.it/300x300");
+        expect(score_user_avatar).equals("//placehold.it/300x300");
       });
   });
 });

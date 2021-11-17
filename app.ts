@@ -8,9 +8,9 @@ import userRouter from "./routes/users";
 import { checkToken } from "./middleware/authorization";
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded());
-app.use(cors());
 const port = 3001;
 
 require("./knex");

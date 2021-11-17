@@ -4,7 +4,7 @@ import request from "supertest";
 
 const email = "test@testuser.com";
 const name = "Test User";
-const avatar = "https://placehold.it/123x123";
+const avatar = "//placehold.it/123x123";
 const password = "mypassword";
 
 describe("POST / - create a user", () => {
