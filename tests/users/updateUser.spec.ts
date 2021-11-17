@@ -1,11 +1,11 @@
 import app from "../../app";
 import { expect } from "chai";
 import request from "supertest";
-import loginUser from "../utils/loginUser";
+import { generateAccessToken } from "../../utils/generateToken";
 
-const auth = {
-  token: "",
-};
+const token = generateAccessToken({
+  id: 1,
+});
 
 describe("PATCH /:id - update score", () => {
   it("not return results for unauthorized users", async () => {
@@ -17,15 +17,13 @@ describe("PATCH /:id - update score", () => {
       });
   });
 
-  before(loginUser(auth));
-
   it("cannot update another user", async () => {
     const name = "Updated Name";
     const email = "updated@email.com";
 
     await request(app)
       .patch("/users/2")
-      .set("Authorization", "Bearer " + auth.token)
+      .set("x-access-token", token)
       .send({
         name,
         email,
@@ -42,7 +40,7 @@ describe("PATCH /:id - update score", () => {
 
     await request(app)
       .patch("/users/1")
-      .set("Authorization", "Bearer " + auth.token)
+      .set("x-access-token", token)
       .send({
         name,
         email,

@@ -1,11 +1,11 @@
 import app from "../../app";
 import { expect } from "chai";
 import request from "supertest";
-import loginUser from "../utils/loginUser";
+import { generateAccessToken } from "../../utils/generateToken";
 
-const auth = {
-  token: "",
-};
+const token = generateAccessToken({
+  id: 1,
+});
 
 describe("GET /:id - get one post", () => {
   it("not return results for unauthorized users", async () => {
@@ -17,12 +17,10 @@ describe("GET /:id - get one post", () => {
       });
   });
 
-  before(loginUser(auth));
-
   it("return one post", async () => {
     await request(app)
       .get("/posts/1")
-      .set("Authorization", "Bearer " + auth.token)
+      .set("x-access-token", token)
       .expect(200)
       .then((res) => {
         const {

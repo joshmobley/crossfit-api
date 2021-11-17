@@ -1,6 +1,12 @@
 import { Knex } from "knex";
+import bcrypt from "bcrypt";
 
 export async function seed(knex: Knex): Promise<void> {
+  const salt = bcrypt.genSaltSync(10);
+  const hashPassword = (password) => bcrypt.hashSync(password, salt);
+  console.log(salt);
+  console.log(hashPassword);
+
   // Deletes ALL existing entries
   return knex("users")
     .del()
@@ -10,13 +16,13 @@ export async function seed(knex: Knex): Promise<void> {
         {
           name: "Josh Mobley",
           email: "jmob1986@gmail.com",
-          password: "test123",
+          password: hashPassword("test123"),
           avatar: "//placehold.it/300x300",
         },
         {
           name: "Shaade Tavares",
           email: "shaadet@gmail.com",
-          password: "test123",
+          password: hashPassword("test123"),
           avatar: "//placehold.it/400x400",
         },
       ]);

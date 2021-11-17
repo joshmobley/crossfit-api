@@ -1,11 +1,11 @@
 import app from "../../app";
 import { expect } from "chai";
 import request from "supertest";
-import loginUser from "../utils/loginUser";
+import { generateAccessToken } from "../../utils/generateToken";
 
-const auth = {
-  token: "",
-};
+const token = generateAccessToken({
+  id: 1,
+});
 
 describe("DELETE /:id - delete a score", () => {
   it("not return results for unauthorized users", async () => {
@@ -17,12 +17,10 @@ describe("DELETE /:id - delete a score", () => {
       });
   });
 
-  before(loginUser(auth));
-
   it("cannot delete another users score", async () => {
     await request(app)
       .delete("/scores/2")
-      .set("Authorization", "Bearer " + auth.token)
+      .set("x-access-token", token)
       .expect(403)
       .then((res) => {
         expect(res.text).equals("user not authorized to delete score");
@@ -32,7 +30,7 @@ describe("DELETE /:id - delete a score", () => {
   it("successfully deleted score", async () => {
     await request(app)
       .delete("/scores/3")
-      .set("Authorization", "Bearer " + auth.token)
+      .set("x-access-token", token)
       .expect(200)
       .then((res) => {
         expect(res.text).equals("score deleted");

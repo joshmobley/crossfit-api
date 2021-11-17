@@ -5,7 +5,7 @@ import authRouter from "./routes/auth";
 import postRouter from "./routes/posts";
 import scoreRouter from "./routes/scores";
 import userRouter from "./routes/users";
-import { checkToken } from "./middleware/authorization";
+import { checkAccessToken } from "./middleware/authorization";
 
 const app = express();
 app.use(cors());
@@ -20,9 +20,9 @@ app.get("/", async (req: Request, res: Response) => {
 });
 
 app.use("/auth", authRouter);
-app.use("/posts", checkToken, postRouter);
-app.use("/scores", checkToken, scoreRouter);
-app.use("/users", checkToken, userRouter);
+app.use("/posts", checkAccessToken, postRouter);
+app.use("/scores", checkAccessToken, scoreRouter);
+app.use("/users", checkAccessToken, userRouter);
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);

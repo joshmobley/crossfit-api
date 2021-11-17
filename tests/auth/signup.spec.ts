@@ -7,7 +7,7 @@ const name = "Test User";
 const avatar = "//placehold.it/123x123";
 const password = "mypassword";
 
-describe("POST / - create a user", () => {
+describe("POST /signup - create a user", () => {
   it("returns a user without being logged in", async () => {
     await request(app)
       .post("/auth/signup")
@@ -21,7 +21,6 @@ describe("POST / - create a user", () => {
         expect(res.body.email).equals(email);
         expect(res.body.name).equals(name);
         expect(res.body.avatar).equals(avatar);
-        expect(res.body.password).equals(password);
         expect(res.body.id).to.exist;
       });
   });

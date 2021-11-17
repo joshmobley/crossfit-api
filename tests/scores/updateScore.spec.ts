@@ -1,11 +1,11 @@
 import app from "../../app";
 import { expect } from "chai";
 import request from "supertest";
-import loginUser from "../utils/loginUser";
+import { generateAccessToken } from "../../utils/generateToken";
 
-const auth = {
-  token: "",
-};
+const token = generateAccessToken({
+  id: 1,
+});
 
 describe("PATCH /:id - update score", () => {
   it("not return results for unauthorized users", async () => {
@@ -17,15 +17,13 @@ describe("PATCH /:id - update score", () => {
       });
   });
 
-  before(loginUser(auth));
-
   it("successful score update", async () => {
     const value = "Testing score Updated";
     const comment = "I am testing score update.";
 
     await request(app)
       .patch("/scores/1")
-      .set("Authorization", "Bearer " + auth.token)
+      .set("x-access-token", token)
       .send({
         value,
         comment,

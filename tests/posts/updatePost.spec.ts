@@ -1,11 +1,11 @@
 import app from "../../app";
 import { expect } from "chai";
 import request from "supertest";
-import loginUser from "../utils/loginUser";
+import { generateAccessToken } from "../../utils/generateToken";
 
-const auth = {
-  token: "",
-};
+const token = generateAccessToken({
+  id: 1,
+});
 
 describe("PATCH /:id - update post", () => {
   it("not return results for unauthorized users", async () => {
@@ -17,8 +17,6 @@ describe("PATCH /:id - update post", () => {
       });
   });
 
-  before(loginUser(auth));
-
   it("successful post update", async () => {
     const title = "Testing Post Updated";
     const text = "I am testing post update.";
@@ -26,7 +24,7 @@ describe("PATCH /:id - update post", () => {
 
     await request(app)
       .patch("/posts/1")
-      .set("Authorization", "Bearer " + auth.token)
+      .set("x-access-token", token)
       .send({
         title,
         text,

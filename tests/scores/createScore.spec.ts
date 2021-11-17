@@ -1,11 +1,11 @@
 import app from "../../app";
 import { expect } from "chai";
 import request from "supertest";
-import loginUser from "../utils/loginUser";
+import { generateAccessToken } from "../../utils/generateToken";
 
-const auth = {
-  token: "",
-};
+const token = generateAccessToken({
+  id: 1,
+});
 
 describe("POST / - create score", () => {
   it("not return results for unauthorized users", async () => {
@@ -17,8 +17,6 @@ describe("POST / - create score", () => {
       });
   });
 
-  before(loginUser(auth));
-
   it("successful score creation", async () => {
     const post_id = 1;
     const value = "1000";
@@ -26,7 +24,7 @@ describe("POST / - create score", () => {
 
     await request(app)
       .post("/scores")
-      .set("Authorization", "Bearer " + auth.token)
+      .set("x-access-token", token)
       .send({
         post_id,
         value,

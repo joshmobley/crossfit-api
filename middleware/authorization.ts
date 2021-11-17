@@ -1,14 +1,19 @@
 import { Request, Response, NextFunction } from "express";
+import { verifyAccessToken } from "../utils/generateToken";
 
-const checkToken = (req: Request, res: Response, next: NextFunction) => {
-  const { authorization } = req.headers;
-  if (!authorization) res.status(403).send("User is not authenticated.");
-  else {
-    const bearer = authorization.split(" ");
-    const token = bearer[1];
-    req["user_id"] = parseInt(token);
-    next();
+const checkAccessToken = (req: Request, res: Response, next: NextFunction) => {
+  const token = req && req.headers && req.headers["x-access-token"];
+
+  if (!token) return res.status(403).send("No token provided.");
+
+  try {
+    const user = verifyAccessToken(token);
+    req["user_id"] = user.id;
+  } catch (err) {
+    return res.status(403).send("Invalid token provided.");
   }
+
+  next();
 };
 
-export { checkToken };
+export { checkAccessToken };
