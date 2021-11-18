@@ -22,7 +22,8 @@
     "jsonwebtoken": "^8.5.1",
     "knex": "^0.95.6",
     "objection": "^2.2.15",
-    "sqlite3": "^5.0.2"
+    "sqlite3": "^5.0.2",
+    "uuidv4": "^6.2.12"
   },
   "devDependencies": {
     "@babel/preset-typescript": "^7.16.0",

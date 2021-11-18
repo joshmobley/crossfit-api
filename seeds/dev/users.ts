@@ -4,8 +4,6 @@ import bcrypt from "bcrypt";
 export async function seed(knex: Knex): Promise<void> {
   const salt = bcrypt.genSaltSync(10);
   const hashPassword = (password) => bcrypt.hashSync(password, salt);
-  console.log(salt);
-  console.log(hashPassword);
 
   // Deletes ALL existing entries
   return knex("users")

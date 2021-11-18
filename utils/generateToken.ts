@@ -1,11 +1,33 @@
 import jwt from "jsonwebtoken";
+import { uuid } from "uuidv4";
+import { updateUserRefreshToken } from "../controllers/auth";
 
 const generateAccessToken = (tokenContents) => {
-  return jwt.sign(tokenContents, "thisIsSecret", { expiresIn: "15m" });
+  return jwt.sign(
+    {
+      ...tokenContents,
+      jti: uuid(),
+    },
+    "thisIsSecret",
+    { expiresIn: "15m" }
+  );
 };
 
-const generateRefreshToken = (tokenContents) => {
-  return jwt.sign(tokenContents, "thisIsAnotherSecret", { expiresIn: "14d" });
+const generateRefreshToken = async (user) => {
+  const jti = uuid();
+  const token = jwt.sign(
+    {
+      ...user,
+      jti,
+    },
+    "thisIsAnotherSecret",
+    {
+      expiresIn: "14d",
+    }
+  );
+
+  await updateUserRefreshToken(user.id, jti);
+  return token;
 };
 
 const verifyAccessToken = (token) => {

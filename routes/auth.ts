@@ -1,6 +1,11 @@
 import { Request, Response, Router } from "express";
 const router = Router();
-import { createUser, getUser } from "../controllers/auth";
+import {
+  createUser,
+  getUser,
+  checkUserRefreshToken,
+  updateUserRefreshToken,
+} from "../controllers/auth";
 import {
   generateAccessToken,
   generateRefreshToken,
@@ -21,12 +26,29 @@ router.post("/login", async (req: Request, res: Response) => {
   try {
     const user = await getUser(email, password);
     const accessToken = generateAccessToken(user);
-    const refreshToken = generateRefreshToken(user);
+    const refreshToken = await generateRefreshToken(user);
 
     res.send({
       ...user,
       accessToken,
       refreshToken,
+    });
+  } catch (err) {
+    res.status(403).send(err);
+  }
+});
+
+router.post("/refresh", async (req: Request, res: Response) => {
+  const { user_id, refreshToken } = req.body;
+
+  if (!user_id)
+    return res.status(403).send("User ID cannot be found. Please login again.");
+  if (!refreshToken) return res.status(403).send("No token provided.");
+
+  try {
+    const accessToken = await checkUserRefreshToken(user_id, refreshToken);
+    res.send({
+      accessToken,
     });
   } catch (err) {
     res.status(403).send(err);

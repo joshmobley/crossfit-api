@@ -1,5 +1,9 @@
 import User from "../models/user";
 import bcrypt from "bcrypt";
+import {
+  generateAccessToken,
+  verifyRefreshToken,
+} from "../utils/generateToken";
 
 const createUser = async (
   email: string,
@@ -48,4 +52,41 @@ const getUser = async (emailToCheck: string, passwordToCheck: string) => {
   };
 };
 
-export { createUser, getUser };
+const updateUserRefreshToken = async (id: number, refreshToken: string) => {
+  const salt = await bcrypt.genSalt(10);
+  if (!salt) throw "Refresh token cryptography failed.";
+
+  const hashedRefreshToken = await bcrypt.hash(refreshToken, salt);
+  if (!hashedRefreshToken) throw "Refresh token creation failed.";
+
+  const user = await User.query().patchAndFetchById(id, {
+    refreshToken: hashedRefreshToken,
+  });
+  if (!user) throw "User not found for refresh token.";
+
+  return user;
+};
+
+const checkUserRefreshToken = async (id: number, refreshToken: string) => {
+  if (!refreshToken) throw "No token provided.";
+  const user = await User.query().findById(id);
+
+  const { email, name, avatar, refreshToken: jti } = user;
+  if (!jti) throw "No JTI stored.";
+
+  const verifiedToken = verifyRefreshToken(refreshToken);
+  if (!verifiedToken) throw "Token not valid.";
+
+  const matchingToken = await bcrypt.compare(verifiedToken.jti, jti);
+  if (!matchingToken) throw "Token signature invalid.";
+
+  return generateAccessToken({
+    id,
+    email,
+    name,
+    avatar,
+    refreshToken: verifiedToken,
+  });
+};
+
+export { createUser, getUser, updateUserRefreshToken, checkUserRefreshToken };

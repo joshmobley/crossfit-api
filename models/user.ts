@@ -6,6 +6,7 @@ class User extends Model {
   email: string;
   password: string;
   avatar?: string;
+  refreshToken?: string;
   created_at: string;
   updated_at: string;
 
