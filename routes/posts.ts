@@ -21,11 +21,10 @@ router.get("/:id", async (req: Request, res: Response) => {
 });
 
 router.post("/", async (req: Request, res: Response) => {
-  const { title, text, scoretype } = req.body;
+  const { title, text, scoretype, image } = req.body;
   const user_id = req["user_id"];
-
   try {
-    const newPost = await createPost(title, text, scoretype, user_id);
+    const newPost = await createPost(title, text, image, scoretype, user_id);
     res.send(newPost);
   } catch (err) {
     res.status(500).send(err);

@@ -20,7 +20,6 @@ describe("POST /login - login a user", () => {
         expect(res.body.avatar).equals(avatar);
         expect(res.body.id).to.exist;
         expect(res.body.accessToken).to.exist;
-        expect(res.body.refreshToken).to.exist;
       });
   });
 

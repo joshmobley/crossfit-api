@@ -8,6 +8,7 @@ const checkAccessToken = (req: Request, res: Response, next: NextFunction) => {
 
   try {
     const user = verifyAccessToken(token);
+    console.log(user);
     req["user_id"] = user.id;
   } catch (err) {
     return res.status(403).send("Invalid token provided.");

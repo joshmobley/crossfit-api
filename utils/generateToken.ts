@@ -2,22 +2,32 @@ import jwt from "jsonwebtoken";
 import { uuid } from "uuidv4";
 import { updateUserRefreshToken } from "../controllers/auth";
 
-const generateAccessToken = (tokenContents) => {
+const generateAccessToken = (user) => {
   return jwt.sign(
     {
-      ...tokenContents,
+      ...user,
       jti: uuid(),
     },
     "thisIsSecret",
-    { expiresIn: "15m" }
+    { expiresIn: "1h" }
   );
 };
 
-const generateRefreshToken = async (user) => {
+const generateIDToken = (user) => {
+  return jwt.sign(
+    {
+      ...user,
+      jti: uuid(),
+    },
+    "thisIsOneMoreSecret",
+    { expiresIn: "12h" }
+  );
+};
+
+const generateRefreshToken = async ({ id }) => {
   const jti = uuid();
   const token = jwt.sign(
     {
-      ...user,
       jti,
     },
     "thisIsAnotherSecret",
@@ -26,7 +36,7 @@ const generateRefreshToken = async (user) => {
     }
   );
 
-  await updateUserRefreshToken(user.id, jti);
+  await updateUserRefreshToken(id, jti);
   return token;
 };
 
@@ -47,6 +57,7 @@ const verifyRefreshToken = (token) => {
 export {
   generateAccessToken,
   generateRefreshToken,
+  generateIDToken,
   verifyAccessToken,
   verifyRefreshToken,
 };

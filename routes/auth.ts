@@ -9,6 +9,7 @@ import {
 import {
   generateAccessToken,
   generateRefreshToken,
+  generateIDToken,
 } from "../utils/generateToken";
 
 router.post("/signup", async (req: Request, res: Response) => {
@@ -25,13 +26,13 @@ router.post("/login", async (req: Request, res: Response) => {
   const { email, password } = req.body;
   try {
     const user = await getUser(email, password);
-    const accessToken = generateAccessToken(user);
+    const accessToken = await generateAccessToken(user);
     const refreshToken = await generateRefreshToken(user);
+    const idToken = await generateIDToken(user);
 
     res.send({
       ...user,
       accessToken,
-      refreshToken,
     });
   } catch (err) {
     res.status(403).send(err);
